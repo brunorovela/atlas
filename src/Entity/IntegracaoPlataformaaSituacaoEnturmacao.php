@@ -1,0 +1,105 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\DBAL\EsquemaFisico;
+use App\Repository\IntegracaoPlataformaaSituacaoEnturmacaoRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: IntegracaoPlataformaaSituacaoEnturmacaoRepository::class)]
+#[ORM\Table(
+    name: 'integracao_plataformaa_situacao_enturmacao',
+    options: ['charset' => 'latin1', 'collation' => 'latin1_swedish_ci']
+)]
+#[ORM\UniqueConstraint(name: 'UK_integracao_plataformaa_situacao_enturmacao', columns: ['plataformaa_ambiente_id', 'cd_situacao'])]
+#[ORM\Index(name: 'IDX_CD_SITUACAO', columns: ['cd_situacao'])]
+#[ORM\Index(name: 'IDX_BDA45BF55EAA6F8A', columns: ['plataformaa_ambiente_id'])]
+#[EsquemaFisico(
+    chavesEstrangeiras: [
+        ['nome' => 'integracao_plataformaa_situacao_enturmacao_ambiente_FK', 'colunas' => ['plataformaa_ambiente_id'], 'tabelaAlvo' => 'integracao_plataformaa_ambiente', 'colunasAlvo' => ['id'], 'opcoes' => ['onDelete' => 'NO ACTION', 'onUpdate' => 'NO ACTION']]
+    ],
+    autoIncremento: []
+)]
+class IntegracaoPlataformaaSituacaoEnturmacao
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'id', type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne(targetEntity: IntegracaoPlataformaaAmbiente::class)]
+    #[ORM\JoinColumn(name: 'plataformaa_ambiente_id', referencedColumnName: 'id', nullable: true, options: ['default' => null, 'unsigned' => false, 'fixed' => false, 'comment' => ''])]
+    private ?IntegracaoPlataformaaAmbiente $plataformaaAmbienteId = null;
+
+    #[ORM\Column(name: 'cd_situacao', type: 'integer')]
+    private ?int $cdSituacao = null;
+
+    #[ORM\Column(name: 'ds_external_id', type: 'string', length: 255, nullable: true)]
+    private ?string $dsExternalId = null;
+
+    #[ORM\Column(name: 'dt_base', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeInterface $dtBase = null;
+
+    public function __construct(
+        ?IntegracaoPlataformaaAmbiente $plataformaaAmbienteId = null,
+        ?int $cdSituacao = null,
+        ?string $dsExternalId = null,
+        ?\DateTimeInterface $dtBase = null
+    ) {
+        $this->plataformaaAmbienteId = $plataformaaAmbienteId;
+        $this->cdSituacao = $cdSituacao;
+        $this->dsExternalId = $dsExternalId;
+        $this->dtBase = $dtBase;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getPlataformaaAmbienteId(): ?IntegracaoPlataformaaAmbiente
+    {
+        return $this->plataformaaAmbienteId;
+    }
+
+    public function setPlataformaaAmbienteId(?IntegracaoPlataformaaAmbiente $plataformaaAmbienteId): self
+    {
+        $this->plataformaaAmbienteId = $plataformaaAmbienteId;
+        return $this;
+    }
+
+    public function getCdSituacao(): ?int
+    {
+        return $this->cdSituacao;
+    }
+
+    public function setCdSituacao(?int $cdSituacao): self
+    {
+        $this->cdSituacao = $cdSituacao;
+        return $this;
+    }
+
+    public function getDsExternalId(): ?string
+    {
+        return $this->dsExternalId;
+    }
+
+    public function setDsExternalId(?string $dsExternalId): self
+    {
+        $this->dsExternalId = $dsExternalId;
+        return $this;
+    }
+
+    public function getDtBase(): ?\DateTimeInterface
+    {
+        return $this->dtBase;
+    }
+
+    public function setDtBase(?\DateTimeInterface $dtBase): self
+    {
+        $this->dtBase = $dtBase;
+        return $this;
+    }
+}

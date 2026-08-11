@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repository;
+
+use App\Entity\AppIntegracaoDadoDiarioAulas;
+use Doctrine\ORM\EntityRepository;
+
+/**
+ * @extends EntityRepository<AppIntegracaoDadoDiarioAulas>
+ */
+class AppIntegracaoDadoDiarioAulasRepository extends EntityRepository
+{
+}
