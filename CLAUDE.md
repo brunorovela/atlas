@@ -120,6 +120,10 @@ Ponto não óbvio: VIEWs são removidas dos dois schemas em memória antes da co
 
 ## Credenciais
 
-`bootstrap.php` e `comparador.php` têm credenciais de banco hardcoded, incluindo o host remoto `143.0.122.7`. Não propague essas credenciais para novos arquivos, saída de terminal, commits ou mensagens. Scripts novos devem obter a conexão via `require bootstrap.php` — é o que `bin/gerar-entidades.php` faz, justamente para não duplicar credencial. Se precisar de uma conexão realmente separada, pergunte ao usuário como parametrizar (env var, config fora do versionamento) em vez de copiar o bloco.
+Credencial de banco vive só no `.env` da raiz, **fora do versionamento** (`/.env` no `.gitignore`). `.env.example` documenta as chaves sem valor: `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_DRIVER`.
+
+`bootstrap.php` lê o arquivo via `App\Config\Ambiente::carregar()` e monta `$connectionParams` com `obrigatorio()` (estoura se a chave faltar) / `obter()` com default para porta e driver. Variável já exportada no ambiente (container, CI) tem precedência sobre o arquivo — `Ambiente` não sobrescreve o que já existe em `$_ENV`/`$_SERVER`/`getenv()`. Sem dependência nova: parser próprio, não é symfony/dotenv.
+
+Não copie valor de credencial para novo arquivo, saída de terminal, commit ou mensagem. Scripts novos devem obter a conexão via `require bootstrap.php` — é o que `bin/gerar-entidades.php` faz. Se precisar de uma conexão realmente separada (ex.: o lado "cliente" de um comparador), use `Ambiente` com um prefixo próprio de chave (`DB_CLIENTE_*`) e acrescente as chaves ao `.env.example`, nunca com valor embutido no código.
 
 `index.php` **escreve** no banco configurado (faz `persist`/`flush` de um `AvlAvaliadores`). Como o `bootstrap.php` aponta para o `onboarding`, rodar `index.php` insere linha no schema de referência. Confirme com o usuário antes de executá-lo.

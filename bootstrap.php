@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use App\Config\Ambiente;
 use App\DBAL\ReconciliadorEsquema;
 use App\DBAL\TinyIntMiddleware;
 use App\DBAL\TinyIntType;
@@ -28,14 +29,17 @@ if (!Type::hasType(TinyIntType::NAME)) {
 }
 $config->setMiddlewares([new TinyIntMiddleware()]);
 
-// 2. Parâmetros de conexão do MySQL
+// 2. Parâmetros de conexão do MySQL, lidos do .env (fora do versionamento).
+// Variável já exportada no ambiente tem precedência sobre o arquivo.
+Ambiente::carregar(__DIR__ . '/.env');
+
 $connectionParams = [
-    'dbname'   => 'onboarding',
-    'user'     => 'root',
-    'password' => 'AnB8pypclXD031yk',
-    'host'     => '143.0.122.7',
-    'port'     => 3306,
-    'driver'   => 'pdo_mysql',
+    'dbname'   => Ambiente::obrigatorio('DB_NAME'),
+    'user'     => Ambiente::obrigatorio('DB_USER'),
+    'password' => Ambiente::obrigatorio('DB_PASSWORD'),
+    'host'     => Ambiente::obrigatorio('DB_HOST'),
+    'port'     => (int) Ambiente::obter('DB_PORT', '3306'),
+    'driver'   => Ambiente::obter('DB_DRIVER', 'pdo_mysql'),
 ];
 
 // 3. Cria a conexão e o EntityManager
