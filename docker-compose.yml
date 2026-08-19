@@ -1,6 +1,6 @@
 services:
-  servidor:
-    container_name: servidor
+  atlas:
+    container_name: atlas
     image: rovela/php:8.5-fpm-alpine3.23
     restart: unless-stopped
     volumes:
