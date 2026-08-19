@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
     name: 'uni_diploma_processo_matricula_documento',
     options: ['charset' => 'latin1', 'collation' => 'latin1_swedish_ci', 'comment' => 'Tabela responsavel por vincular os registros do uni_diploma_processo_matricula com o acrv_documento_pessoa']
 )]
-#[ORM\Index(name: 'FK__uni_diploma_processo_matricula', columns: ['cd_diploma_processo_matricula'])]
 #[ORM\Index(name: 'FK__acrv_documento_pessoa', columns: ['cd_documento_pessoa'])]
+#[ORM\Index(name: 'FK__uni_diploma_processo_matricula', columns: ['cd_diploma_processo_matricula'])]
 #[EsquemaFisico(
     chavesEstrangeiras: [
         ['nome' => 'FK__acrv_documento_pessoa', 'colunas' => ['cd_documento_pessoa'], 'tabelaAlvo' => 'acrv_documento_pessoa', 'colunasAlvo' => ['cd_documento_pessoa'], 'opcoes' => ['onDelete' => 'NO ACTION', 'onUpdate' => 'NO ACTION']],

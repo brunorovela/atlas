@@ -49,6 +49,9 @@ class ReqItensAnexo
     #[ORM\Column(name: 'dt_excluido', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $dtExcluido = null;
 
+    #[ORM\Column(name: 'dt_enfileirado', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $dtEnfileirado = null;
+
     public function __construct(
         ?ReqRegistroItens $cdItem = null,
         ?string $nmAnexo = null,
@@ -56,7 +59,8 @@ class ReqItensAnexo
         ?string $dsArquivo = null,
         ?string $dsChave = null,
         ?\DateTimeInterface $dtBase = null,
-        ?\DateTimeInterface $dtExcluido = null
+        ?\DateTimeInterface $dtExcluido = null,
+        ?\DateTimeInterface $dtEnfileirado = null
     ) {
         $this->cdItem = $cdItem;
         $this->nmAnexo = $nmAnexo;
@@ -65,6 +69,7 @@ class ReqItensAnexo
         $this->dsChave = $dsChave;
         $this->dtBase = $dtBase;
         $this->dtExcluido = $dtExcluido;
+        $this->dtEnfileirado = $dtEnfileirado;
     }
 
     public function getId(): ?int
@@ -146,6 +151,17 @@ class ReqItensAnexo
     public function setDtExcluido(?\DateTimeInterface $dtExcluido): self
     {
         $this->dtExcluido = $dtExcluido;
+        return $this;
+    }
+
+    public function getDtEnfileirado(): ?\DateTimeInterface
+    {
+        return $this->dtEnfileirado;
+    }
+
+    public function setDtEnfileirado(?\DateTimeInterface $dtEnfileirado): self
+    {
+        $this->dtEnfileirado = $dtEnfileirado;
         return $this;
     }
 }

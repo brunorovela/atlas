@@ -13,13 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
     name: 'uni_diploma_processo_matricula',
     options: ['charset' => 'latin1', 'collation' => 'latin1_swedish_ci']
 )]
-#[ORM\UniqueConstraint(name: 'UK_cd_diploma_processo_id_matricula', columns: ['cd_diploma_processo', 'id_matricula'])]
-#[ORM\Index(name: 'FK_uni_diploma_processo_matricula_uni_diploma_processo', columns: ['cd_diploma_processo'])]
 #[ORM\Index(name: 'FK_uni_diploma_processo_matricula_matriculas', columns: ['id_matricula'])]
-#[ORM\Index(name: 'FK_uni_dpm_uni_diploma_processo_matricula_situacao', columns: ['cd_diploma_processo_matricula_situacao'])]
 #[ORM\Index(name: 'FK_uni_diploma_processo_matricula_tecfy_log', columns: ['cd_log_gravar'])]
 #[ORM\Index(name: 'FK_uni_diploma_processo_matricula_tecfy_log_2', columns: ['cd_log_gravar_doc_academica'])]
 #[ORM\Index(name: 'FK_uni_diploma_processo_matricula_tecfy_log_3', columns: ['cd_log_consultar'])]
+#[ORM\Index(name: 'FK_uni_diploma_processo_matricula_uni_diploma_processo', columns: ['cd_diploma_processo'])]
+#[ORM\Index(name: 'FK_uni_dpm_uni_diploma_processo_matricula_situacao', columns: ['cd_diploma_processo_matricula_situacao'])]
+#[ORM\UniqueConstraint(name: 'UK_cd_diploma_processo_id_matricula', columns: ['cd_diploma_processo', 'id_matricula'])]
 #[EsquemaFisico(
     chavesEstrangeiras: [
         ['nome' => 'FK_uni_diploma_processo_matricula_matriculas', 'colunas' => ['id_matricula'], 'tabelaAlvo' => 'matriculas', 'colunasAlvo' => ['id_matricula'], 'opcoes' => ['onDelete' => 'NO ACTION', 'onUpdate' => 'NO ACTION']],
@@ -82,6 +82,9 @@ class UniDiplomaProcessoMatricula
     #[ORM\Column(name: 'dt_base', type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeInterface $dtBase = null;
 
+    #[ORM\Column(name: 'dt_confirmacao_tecfy', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $dtConfirmacaoTecfy = null;
+
     public function __construct(
         ?UniDiplomaProcesso $cdDiplomaProcesso = null,
         ?int $idMatricula = null,
@@ -95,7 +98,8 @@ class UniDiplomaProcessoMatricula
         ?string $dsLog = null,
         ?\DateTimeInterface $dtLog = null,
         ?string $dsUrl = null,
-        ?\DateTimeInterface $dtBase = null
+        ?\DateTimeInterface $dtBase = null,
+        ?\DateTimeInterface $dtConfirmacaoTecfy = null
     ) {
         $this->cdDiplomaProcesso = $cdDiplomaProcesso;
         $this->idMatricula = $idMatricula;
@@ -110,6 +114,7 @@ class UniDiplomaProcessoMatricula
         $this->dtLog = $dtLog;
         $this->dsUrl = $dsUrl;
         $this->dtBase = $dtBase;
+        $this->dtConfirmacaoTecfy = $dtConfirmacaoTecfy;
     }
 
     public function getCdDiplomaProcessoMatricula(): ?int
@@ -257,6 +262,17 @@ class UniDiplomaProcessoMatricula
     public function setDtBase(?\DateTimeInterface $dtBase): self
     {
         $this->dtBase = $dtBase;
+        return $this;
+    }
+
+    public function getDtConfirmacaoTecfy(): ?\DateTimeInterface
+    {
+        return $this->dtConfirmacaoTecfy;
+    }
+
+    public function setDtConfirmacaoTecfy(?\DateTimeInterface $dtConfirmacaoTecfy): self
+    {
+        $this->dtConfirmacaoTecfy = $dtConfirmacaoTecfy;
         return $this;
     }
 }

@@ -59,6 +59,9 @@ class MensalidadesPagseguro
     #[ORM\Column(name: 'nr_parcelas_taxa', type: 'smallint', nullable: true)]
     private ?int $nrParcelasTaxa = null;
 
+    #[ORM\Column(name: 'ds_meios_pagamento', type: 'string', length: 100, nullable: true)]
+    private ?string $dsMeiosPagamento = null;
+
     public function __construct(
         ?int $cdMensalidade = null,
         ?string $dsChaveIntegracao = null,
@@ -73,7 +76,8 @@ class MensalidadesPagseguro
         ?string $vlPedido = null,
         ?string $dsTipoPagamento = null,
         ?string $vlTaxa = null,
-        ?int $nrParcelasTaxa = null
+        ?int $nrParcelasTaxa = null,
+        ?string $dsMeiosPagamento = null
     ) {
         $this->cdMensalidade = $cdMensalidade;
         $this->dsChaveIntegracao = $dsChaveIntegracao;
@@ -89,6 +93,7 @@ class MensalidadesPagseguro
         $this->dsTipoPagamento = $dsTipoPagamento;
         $this->vlTaxa = $vlTaxa;
         $this->nrParcelasTaxa = $nrParcelasTaxa;
+        $this->dsMeiosPagamento = $dsMeiosPagamento;
     }
 
     public function getCdMensalidade(): ?int
@@ -242,6 +247,17 @@ class MensalidadesPagseguro
     public function setNrParcelasTaxa(?int $nrParcelasTaxa): self
     {
         $this->nrParcelasTaxa = $nrParcelasTaxa;
+        return $this;
+    }
+
+    public function getDsMeiosPagamento(): ?string
+    {
+        return $this->dsMeiosPagamento;
+    }
+
+    public function setDsMeiosPagamento(?string $dsMeiosPagamento): self
+    {
+        $this->dsMeiosPagamento = $dsMeiosPagamento;
         return $this;
     }
 }
